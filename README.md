@@ -1,21 +1,5 @@
 # Cafe
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `cafe` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:cafe, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/cafe](https://hexdocs.pm/cafe).
+An CQRS/ES based example application written using [SevenOtters](https://github.com/sevenotters/sevenotters).
+Inspired by and freely adapted from [tutorial](http://www.cqrs.nu/tutorial/cs/01-design).
 
