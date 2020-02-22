@@ -10,14 +10,14 @@ defmodule Cafe.Projection.Tables do
       @table_open_event
     ]
 
-  defstruct number: nil
+  defstruct number: nil, waiter: nil
 
   @spec initial_state() :: List.t()
   defp initial_state, do: []
 
   @spec handle_event(Seven.Otters.Event.t(), List.t()) :: List.t()
   defp handle_event(%Seven.Otters.Event{type: @table_open_event} = event, tables) do
-    new_table = %__MODULE__{number: event.payload.v1.number}
+    new_table = %__MODULE__{number: event.payload.v1.number, waiter: event.payload.v1.waiter}
 
     tables ++ [new_table]
   end

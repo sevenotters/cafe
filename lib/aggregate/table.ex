@@ -1,13 +1,14 @@
 defmodule Cafe.Aggregate.Table do
   use Seven.Otters.Aggregate, aggregate_field: :number
 
-  defstruct number: nil
+  defstruct number: nil, waiter: nil
 
   @open_table_command "OpenTable"
   @open_table_validation [
     :map,
     fields: [
-      number: [:string]
+      number: [:string],
+      waiter: [:string]
     ]
   ]
 
@@ -24,7 +25,8 @@ defmodule Cafe.Aggregate.Table do
   @spec route(String.t(), any) :: {:routed, Map.y(), atom} | {:invalid, Map.t()}
   def route(@open_table_command, params) do
     cmd = %{
-      number: params[:number]
+      number: params[:number],
+      waiter: params[:waiter]
     }
 
     @open_table_command
@@ -37,7 +39,8 @@ defmodule Cafe.Aggregate.Table do
   @spec handle_command(Map.t(), any) :: {:managed, List.t()}
   defp handle_command(%Seven.Otters.Command{type: @open_table_command} = command, _state) do
   event = %{
-    number: command.payload.number
+    number: command.payload.number,
+    waiter: command.payload.waiter
   }
 
   {:managed, [create_event(@table_open_event, %{v1: event})]}
@@ -45,6 +48,6 @@ defmodule Cafe.Aggregate.Table do
 
   @spec handle_event(Map.t(), any) :: any
   defp handle_event(%Seven.Otters.Event{type: @table_open_event} = event, state) do
-    %{ state | number: event.payload.v1.number }
+    %{ state | number: event.payload.v1.number, waiter: event.payload.v1.waiter }
   end
 end

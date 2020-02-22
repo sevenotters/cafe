@@ -11,7 +11,7 @@ defmodule TableTest do
         id: request_id,
         command: "OpenTable",
         sender: __MODULE__,
-        params: %{number: "42"}
+        params: %{number: "42", waiter: "Bob"}
       }
       |> Seven.CommandBus.send_command_request()
 
