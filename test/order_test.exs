@@ -36,6 +36,10 @@ defmodule OrderTest do
         |> Seven.CommandBus.send_command_request()
 
       assert result == :managed
+
+      Seven.Test.Helper.wait()
+
+      {:ok, [%Cafe.Projection.Orders{number: @table_number, served: false}]} = Cafe.Projection.Orders.query(:unserved, @table_number)
     end
   end
 end
