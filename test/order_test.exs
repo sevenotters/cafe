@@ -2,13 +2,7 @@ defmodule OrderTest do
   use ExUnit.Case
   import TestHelper
 
-  @table_number "1"
   @invalid_table_number "0"
-
-  setup do
-    create_a_table(@table_number, "Bob")
-    :ok
-  end
 
   describe "test ordering" do
 
@@ -18,7 +12,7 @@ defmodule OrderTest do
           id: Seven.Data.Persistence.new_id,
           command: "PlaceOrder",
           sender: __MODULE__,
-          params: %{number: @invalid_table_number, items: [%{type: :food, description: "test", price: 10}]}
+          params: %{number: @invalid_table_number, type: :food, items: [%{description: "test", price: 10}]}
         }
         |> Seven.CommandBus.send_command_request()
 
@@ -26,12 +20,14 @@ defmodule OrderTest do
     end
 
     test "make an order" do
+      table_number = create_a_table("Bob")
+
       result =
         %Seven.CommandRequest{
           id: Seven.Data.Persistence.new_id,
           command: "PlaceOrder",
           sender: __MODULE__,
-          params: %{number: @table_number, items: [%{type: :food, description: "test", price: 10}]}
+          params: %{number: table_number, type: :food, items: [%{description: "test", price: 10}]}
         }
         |> Seven.CommandBus.send_command_request()
 
@@ -39,7 +35,7 @@ defmodule OrderTest do
 
       Seven.Test.Helper.wait()
 
-      {:ok, [%Cafe.Projection.Orders{number: @table_number, served: false}]} = Cafe.Projection.Orders.query(:unserved, @table_number)
+      {:ok, [%Cafe.Projection.Orders{number: ^table_number, served: false}]} = Cafe.Projection.Orders.query(:unserved, table_number)
     end
   end
 end
