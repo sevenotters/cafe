@@ -99,9 +99,10 @@ defmodule Cafe.Aggregate.Table do
   defp pre_handle_command(_command, %{number: nil}), do: {:table_not_open, "Table not open"}
 
   defp pre_handle_command(%Seven.Otters.Command{type: @serve_drinks_command} = command, %{orders: orders}) do
-    case find_unserved_order(:drink, command.payload.order_id, orders) do
-      nil -> {:routed_but_invalid, "no_drinks_order"}
-      _ -> :ok
+    case find_order(:drink, command.payload.order_id, orders) do
+      nil             -> {:routed_but_invalid, "no_drinks_order"}
+      %{served: true} -> {:routed_but_invalid, "already_served"}
+      _               -> :ok
     end
   end
   defp pre_handle_command(_command, _state), do: :ok
@@ -131,7 +132,7 @@ defmodule Cafe.Aggregate.Table do
   end
 
   defp handle_command(%Seven.Otters.Command{type: @serve_drinks_command} = command, %{orders: orders}) do
-    order = find_unserved_order(:drink, command.payload.order_id, orders) |> assert_is_not_null()
+    order = find_order(:drink, command.payload.order_id, orders) |> assert_is_not_null()
 
     event = %{
       number: command.payload.number,
@@ -158,8 +159,8 @@ defmodule Cafe.Aggregate.Table do
   #
   # Private
   #
-  defp find_unserved_order(type, order_id, orders) do
-    orders |> Enum.find(fn o -> o.id == order_id and o.type == type and not o.served end)
+  defp find_order(type, order_id, orders) do
+    orders |> Enum.find(fn o -> o.id == order_id and o.type == type end)
   end
 
   defp assert_is_not_null(i) when is_nil(i), do: raise "is not null assertion failed"
