@@ -5,11 +5,10 @@ defmodule OrderTest do
   @invalid_table_number "0"
 
   describe "test ordering" do
-
     test "order to an invalid table" do
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "PlaceOrder",
           sender: __MODULE__,
           params: %{number: @invalid_table_number, type: :food, items: [%{description: "test", price: 10}]}
@@ -24,7 +23,7 @@ defmodule OrderTest do
 
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "PlaceOrder",
           sender: __MODULE__,
           params: %{number: table_number, type: :food, items: [%{description: "test", price: 10}]}

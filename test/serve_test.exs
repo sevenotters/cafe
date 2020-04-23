@@ -5,7 +5,6 @@ defmodule ServeTest do
   @invalid_table_number "0"
 
   describe "test serving" do
-
     test "serving to an invalid table" do
       table_number = create_a_table("Bob")
       order_a_drink(table_number, "beer_1", 10)
@@ -14,7 +13,7 @@ defmodule ServeTest do
 
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "ServeDrinks",
           sender: __MODULE__,
           params: %{number: @invalid_table_number, order_id: order.order_id}
@@ -32,7 +31,7 @@ defmodule ServeTest do
 
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "ServeDrinks",
           sender: __MODULE__,
           params: %{number: table_number, order_id: order.order_id}
@@ -55,7 +54,7 @@ defmodule ServeTest do
       # First time
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "ServeDrinks",
           sender: __MODULE__,
           params: %{number: table_number, order_id: order.order_id}
@@ -67,7 +66,7 @@ defmodule ServeTest do
       # Second time
       result =
         %Seven.CommandRequest{
-          id: Seven.Data.Persistence.new_id,
+          id: Seven.Data.Persistence.new_id(),
           command: "ServeDrinks",
           sender: __MODULE__,
           params: %{number: table_number, order_id: order.order_id}

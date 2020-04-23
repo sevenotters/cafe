@@ -22,7 +22,7 @@ defmodule Cafe.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:seven, git: "https://github.com/sevenotters/sevenotters.git", tag: "0.1.0"}
+      {:seven, "~> 0.2"}
     ]
   end
 end

@@ -21,13 +21,17 @@ defmodule Cafe.Aggregate.Table do
       number: [:string],
       order_id: [:string],
       type: [:atom, in: [:drink, :food]],
-      items: [:list, min: 1, of: [
-        :map,
-        fields: [
-          description: [:string],
-          price: [:integer]
+      items: [
+        :list,
+        min: 1,
+        of: [
+          :map,
+          fields: [
+            description: [:string],
+            price: [:integer]
+          ]
         ]
-      ]]
+      ]
     ]
   ]
 
@@ -100,11 +104,12 @@ defmodule Cafe.Aggregate.Table do
 
   defp pre_handle_command(%Seven.Otters.Command{type: @serve_drinks_command} = command, %{orders: orders}) do
     case find_order(:drink, command.payload.order_id, orders) do
-      nil             -> {:routed_but_invalid, "no_drinks_order"}
+      nil -> {:routed_but_invalid, "no_drinks_order"}
       %{served: true} -> {:routed_but_invalid, "already_served"}
-      _               -> :ok
+      _ -> :ok
     end
   end
+
   defp pre_handle_command(_command, _state), do: :ok
 
   @spec handle_command(Map.t(), any) :: {:managed, List.t()}
@@ -144,11 +149,11 @@ defmodule Cafe.Aggregate.Table do
 
   @spec handle_event(Map.t(), any) :: any
   defp handle_event(%Seven.Otters.Event{type: @table_open_event} = event, state) do
-    %{ state | number: event.payload.v1.number, waiter: event.payload.v1.waiter }
+    %{state | number: event.payload.v1.number, waiter: event.payload.v1.waiter}
   end
 
   defp handle_event(%Seven.Otters.Event{type: @order_placed_event} = event, %{orders: orders} = state) do
-    %{ state | orders: [event.payload.v1.order] ++ orders }
+    %{state | orders: [event.payload.v1.order] ++ orders}
   end
 
   defp handle_event(%Seven.Otters.Event{type: @drinks_served_event} = event, %{orders: orders} = state) do
@@ -163,6 +168,6 @@ defmodule Cafe.Aggregate.Table do
     orders |> Enum.find(fn o -> o.id == order_id and o.type == type end)
   end
 
-  defp assert_is_not_null(i) when is_nil(i), do: raise "is not null assertion failed"
+  defp assert_is_not_null(i) when is_nil(i), do: raise("is not null assertion failed")
   defp assert_is_not_null(i), do: i
 end

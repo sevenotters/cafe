@@ -4,7 +4,7 @@ defmodule TableTest do
   test "register a new table" do
     Seven.EventStore.EventStore.subscribe("TableOpen", self())
 
-    request_id = Seven.Data.Persistence.new_id
+    request_id = Seven.Data.Persistence.new_id()
 
     result =
       %Seven.CommandRequest{
@@ -24,7 +24,7 @@ defmodule TableTest do
     table_number = "43"
 
     %Seven.CommandRequest{
-      id: Seven.Data.Persistence.new_id,
+      id: Seven.Data.Persistence.new_id(),
       command: "OpenTable",
       sender: __MODULE__,
       params: %{number: table_number, waiter: "Bob"}
@@ -38,7 +38,7 @@ defmodule TableTest do
     tables = module.filter(fn c -> c.number == table_number end)
     assert length(tables) == 1
 
-    #method 2
+    # method 2
     {:ok, [%Cafe.Projection.Tables{number: "43", waiter: "Bob"}]} = Cafe.Projection.Tables.query(:table, table_number)
   end
 end
