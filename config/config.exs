@@ -30,3 +30,5 @@ config :logger, :console,
 # config :elastix,
 #   json_options: [keys: :atoms],
 #   httpoison_options: [hackney: [pool: :elastix_pool]]
+
+import_config "#{Mix.env()}.exs"
