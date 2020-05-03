@@ -1,6 +1,6 @@
 defmodule Cafe.Aggregate.Table do
   use Seven.Otters.Aggregate, aggregate_field: :number
-
+  import Cafe.Aggregate.Aggregate
   alias Seven.Data.Persistence
 
   defstruct number: nil, waiter: nil, orders: []
@@ -67,7 +67,7 @@ defmodule Cafe.Aggregate.Table do
 
     @open_table_command
     |> Seven.Otters.Command.create(cmd)
-    |> validate(@open_table_validation)
+    |> validate(@open_table_validation, __MODULE__)
   end
 
   def route(@place_order_command, params) do
@@ -81,7 +81,7 @@ defmodule Cafe.Aggregate.Table do
 
     @place_order_command
     |> Seven.Otters.Command.create(cmd)
-    |> validate(@place_order_validation)
+    |> validate(@place_order_validation, __MODULE__)
   end
 
   def route(@serve_drinks_command, params) do
@@ -92,7 +92,7 @@ defmodule Cafe.Aggregate.Table do
 
     @serve_drinks_command
     |> Seven.Otters.Command.create(cmd)
-    |> validate(@serve_drinks_validation)
+    |> validate(@serve_drinks_validation, __MODULE__)
   end
 
   def route(_command, _params), do: :not_routed
