@@ -95,8 +95,6 @@ defmodule Cafe.Aggregate.Table do
     |> validate(@serve_drinks_validation, __MODULE__)
   end
 
-  def route(_command, _params), do: :not_routed
-
   @spec pre_handle_command(Map.t(), any) :: :ok | {atom, any}
   defp pre_handle_command(%Seven.Otters.Command{type: @open_table_command}, %{number: nil}), do: :ok
   defp pre_handle_command(%Seven.Otters.Command{type: @open_table_command}, _state), do: {:table_already_open, "Table already open"}
@@ -109,8 +107,6 @@ defmodule Cafe.Aggregate.Table do
       _ -> :ok
     end
   end
-
-  defp pre_handle_command(_command, _state), do: :ok
 
   @spec handle_command(Map.t(), any) :: {:managed, List.t()}
   defp handle_command(%Seven.Otters.Command{type: @open_table_command} = command, _state) do

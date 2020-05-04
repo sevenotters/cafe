@@ -3,6 +3,8 @@ defmodule Cafe.Projection.Tables do
   List of all available tables.
   """
 
+  import Cafe.Projection.Projection
+
   @table_open_event "TableOpen"
 
   use Seven.Otters.Projection,
@@ -12,8 +14,8 @@ defmodule Cafe.Projection.Tables do
 
   defstruct number: nil, waiter: nil
 
-  @spec initial_state() :: List.t()
-  defp initial_state, do: []
+  @spec init_state() :: List.t()
+  defp init_state, do: []
 
   @spec handle_event(Seven.Otters.Event.t(), List.t()) :: List.t()
   defp handle_event(%Seven.Otters.Event{type: @table_open_event} = event, tables) do
@@ -29,7 +31,4 @@ defmodule Cafe.Projection.Tables do
   defp handle_query(:table, table_number, tables) do
     tables |> Enum.filter(fn t -> t.number == table_number end)
   end
-
-  defp handle_filter(filter_func, tables), do: tables |> Enum.filter(filter_func)
-  defp handle_state(tables), do: tables
 end

@@ -2,6 +2,9 @@ defmodule Cafe.Projection.Orders do
   @moduledoc """
   List of all orders in any status.
   """
+
+  import Cafe.Projection.Projection
+
   @order_placed_event "OrderPlaced"
   @drinks_served_event "DrinksServed"
 
@@ -13,8 +16,8 @@ defmodule Cafe.Projection.Orders do
 
   defstruct order_id: nil, number: nil, items: nil, served: false
 
-  @spec initial_state() :: List.t()
-  defp initial_state, do: []
+  @spec init_state() :: List.t()
+  defp init_state, do: []
 
   @spec handle_event(Seven.Otters.Event.t(), List.t()) :: List.t()
   defp handle_event(%Seven.Otters.Event{type: @order_placed_event} = event, orders) do
@@ -49,7 +52,4 @@ defmodule Cafe.Projection.Orders do
   end
 
   defp handle_query(:all, _params, orders), do: orders
-
-  defp handle_filter(filter_func, orders), do: orders |> Enum.filter(filter_func)
-  defp handle_state(orders), do: orders
 end
