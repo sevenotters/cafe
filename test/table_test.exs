@@ -39,6 +39,6 @@ defmodule TableTest do
     assert length(tables) == 1
 
     # method 2
-    {:ok, [%Cafe.Projection.Tables{number: "43", waiter: "Bob"}]} = Cafe.Projection.Tables.query(:table, table_number)
+    [%Cafe.Projection.Tables{number: "43", waiter: "Bob"}] = Cafe.Projection.Tables.query(:table, table_number)
   end
 end

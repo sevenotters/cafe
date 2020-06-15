@@ -34,7 +34,7 @@ defmodule OrderTest do
 
       Seven.Test.Helper.wait()
 
-      {:ok, [%Cafe.Projection.Orders{number: ^table_number, served: false}]} = Cafe.Projection.Orders.query(:unserved, table_number)
+      [%Cafe.Projection.Orders{number: ^table_number, served: false}] = Cafe.Projection.Orders.query(:unserved, table_number)
     end
   end
 end

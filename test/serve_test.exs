@@ -42,7 +42,7 @@ defmodule ServeTest do
 
       Seven.Test.Helper.wait()
 
-      {:ok, [%Cafe.Projection.Orders{number: ^table_number, served: true}]} = Cafe.Projection.Orders.query(:served, table_number)
+      [%Cafe.Projection.Orders{number: ^table_number, served: true}] = Cafe.Projection.Orders.query(:served, table_number)
     end
 
     test "serve twice a drinks order" do
