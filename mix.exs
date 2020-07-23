@@ -22,7 +22,8 @@ defmodule Cafe.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:seven, "~> 0.2"},
+      {:seven, path: "../sevenotters"},
+      {:sevenotters_mongo, path: "../sevenotters_mongo"},
       {:ve, "~> 0.1"}
     ]
   end
